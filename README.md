@@ -2,4 +2,4 @@
 
 ## Tech Stack
 
-TypeScript, Vue 3, Vite, Vitest, Vue Router, Tailwind CSS
+TypeScript, Vue 3, Vite, Vitest, Vue Router, Tailwind CSS, ChartJs

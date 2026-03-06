@@ -1,6 +1,7 @@
 <template>
-    <div v-if="globalsStore.transactionHistory.length > 0" class="w-full max-w-md mx-auto">
-        <h1 class="p-2 text-2xl font-bold">Expense Distribution</h1>
+    <div v-if="globalsStore.transactionHistory.length > 0" class="w-full max-w-md mx-auto text-center">
+        <h1 class="p-2 text-2xl font-bold">{{ globalsStore.language === 'en' ?
+            'Expense Distribution' : 'Distribuția Cheltuielilor' }}</h1>
         <div class="w-full h-80">
             <Pie :data="chartData" :options="chartOptions" />
         </div>

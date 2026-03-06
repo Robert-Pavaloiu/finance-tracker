@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest'
-
 import { mount } from '@vue/test-utils'
 import App from '../App.vue'
 
 describe('App', () => {
-  it('mounts renders properly', () => {
+  it('mounts and contains the navigation bar', () => {
     const wrapper = mount(App)
-    expect(wrapper.text()).toContain('You did it!')
+    // App.vue simply renders the navigation bar and a router view
+    expect(wrapper.findComponent({ name: 'NavigationBar' }).exists()).toBe(true)
   })
 })
