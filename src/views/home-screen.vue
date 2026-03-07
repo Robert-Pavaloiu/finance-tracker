@@ -1,4 +1,5 @@
 <template>
+    <SummaryBar />
     <h1 class="p-2 text-2xl font-bold">{{ globalsStore.language === 'en' ? 'Home' : 'Acasă' }}</h1>
     <TransactionForm />
     <TransactionsTable />
@@ -6,6 +7,7 @@
 </template>
 <script setup lang="ts">
 import ExpensePieChart from '@/components/expense-pie-chart.vue';
+import SummaryBar from '@/components/summary-bar.vue';
 import TransactionForm from '@/components/transaction-form.vue';
 import TransactionsTable from '@/components/transactions-table.vue';
 import { useGlobalsStore } from '@/stores/globals-store';

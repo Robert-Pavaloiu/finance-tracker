@@ -16,7 +16,9 @@ export type MonthlyEarnings = {
   amount: number
 }
 
-export type MonthlyExpenses = {
+export type RecurringExpense = {
+  category: string
+  description?: string
   /** numeric day of month the expense recurs (1-31) */
   recurringDay: number
   /** ISO string for a date calculated from recurringDay using the current month/year */
@@ -32,10 +34,20 @@ export interface GlobalsState {
   language: Language
   transactionHistory: Transaction[]
   monthlyEarnings: MonthlyEarnings
-  monthlyExpenses: MonthlyExpenses
+  recurringExpenses: RecurringExpense[]
   leftoverBudget: number
+  totalExpenses: number
   setRecurringDay: (day: number) => void
   getRecurringDateForMonth: (year: number, month: number) => string
-  setRecurringRentDay: (day: number) => void
+  setRecurringExpenseDay: (category: string, day: number) => void
+  setRecurringExpenseAmount: (category: string, amount: number) => void
+  addRecurringExpense: (
+    category: string,
+    recurringDay: number,
+    amount: number,
+    description?: string,
+  ) => void
   setRentAmount: (amount: number) => void
+  setRecurringRentDay: (day: number) => void
+  ensureRentExpense: () => void
 }

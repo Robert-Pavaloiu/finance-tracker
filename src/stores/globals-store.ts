@@ -5,7 +5,7 @@ import type {
   Currency,
   GlobalsState,
   MonthlyEarnings,
-  MonthlyExpenses,
+  RecurringExpense,
   Language,
 } from '@/types'
 
@@ -21,86 +21,153 @@ function computeRecurringDate(
   return date.toISOString()
 }
 
-export const useGlobalsStore: () => GlobalsState = defineStore('globals', () => {
-  const darkMode = ref<boolean>(false)
-  const language = ref<Language>('en')
-  const currency = ref<Currency>('pound')
-  const transactionHistory = ref<Transaction[]>([])
+export const useGlobalsStore: () => GlobalsState = defineStore(
+  'globals',
+  () => {
+    const darkMode = ref<boolean>(false)
+    const language = ref<Language>('en')
+    const currency = ref<Currency>('pound')
+    const transactionHistory = ref<Transaction[]>([])
 
-  // default recurring day: today
-  const defaultDay = new Date().getDate()
-  const monthlyEarnings = ref<MonthlyEarnings>({
-    recurringDay: defaultDay,
-    recurringDate: computeRecurringDate(defaultDay),
-    amount: 0,
-  })
+    // default recurring day: today
+    const defaultDay = new Date().getDate()
+    const monthlyEarnings = ref<MonthlyEarnings>({
+      recurringDay: defaultDay,
+      recurringDate: computeRecurringDate(defaultDay),
+      amount: 0,
+    })
 
-  function setRecurringDay(day: number) {
-    monthlyEarnings.value.recurringDay = day
-    monthlyEarnings.value.recurringDate = computeRecurringDate(day)
-  }
+    function setRecurringDay(day: number) {
+      monthlyEarnings.value.recurringDay = day
+      monthlyEarnings.value.recurringDate = computeRecurringDate(day)
+    }
 
-  /**
-   * Returns the recurring date for any given month/year based on the stored day.
-   * Useful when calculating payments for future months.
-   */
-  const monthlyExpenses = ref<MonthlyExpenses>({
-    recurringDay: 1,
-    recurringDate: computeRecurringDate(1),
-    amount: 0,
-  })
+    const recurringExpenses = ref<RecurringExpense[]>([])
 
-  function setRecurringRentDay(day: number) {
-    monthlyExpenses.value.recurringDay = day
-    monthlyExpenses.value.recurringDate = computeRecurringDate(day)
-    addRentTransaction()
-  }
+    function setRecurringExpenseDay(category: string, day: number) {
+      const expense = recurringExpenses.value.find((e) => e.category === category)
+      if (expense) {
+        expense.recurringDay = day
+        expense.recurringDate = computeRecurringDate(day)
+        // if rent, drop any other rent entries
+        if (category.toLowerCase() === 'rent') {
+          recurringExpenses.value = recurringExpenses.value.filter(
+            (e) => e === expense || e.category.toLowerCase() !== 'rent',
+          )
+        }
+        rebuildRecurringTransactions()
+      }
+    }
 
-  function setRentAmount(amount: number) {
-    monthlyExpenses.value.amount = amount
-    addRentTransaction()
-  }
+    function setRecurringExpenseAmount(category: string, amount: number) {
+      const expense = recurringExpenses.value.find((e) => e.category === category)
+      if (expense) {
+        expense.amount = amount
+        if (category.toLowerCase() === 'rent') {
+          recurringExpenses.value = recurringExpenses.value.filter(
+            (e) => e === expense || e.category.toLowerCase() !== 'rent',
+          )
+        }
+        rebuildRecurringTransactions()
+      }
+    }
 
-  function addRentTransaction() {
-    // remove existing rent transactions
-    transactionHistory.value = transactionHistory.value.filter((t) => t.category !== 'Rent')
-    if (monthlyExpenses.value.amount > 0) {
-      const rentDate = new Date(monthlyExpenses.value.recurringDate)
-      transactionHistory.value.push({
-        id: Date.now(),
-        category: 'Rent',
-        amount: monthlyExpenses.value.amount,
-        date: rentDate.toLocaleDateString(),
-        isRecurring: true,
+    function addRecurringExpense(
+      category: string,
+      recurringDay: number,
+      amount: number,
+      description?: string,
+    ) {
+      // Only enforce uniqueness for Rent
+      if (category.toLowerCase() === 'rent') {
+        const existingRent = recurringExpenses.value.find(
+          (e) => e.category.toLowerCase() === 'rent',
+        )
+        if (existingRent) return
+      }
+
+      const recurringDate = computeRecurringDate(recurringDay)
+      recurringExpenses.value.push({ category, description, recurringDay, amount, recurringDate })
+      addRecurringTransaction(category, amount, recurringDate)
+    }
+
+    function ensureRentExpense() {
+      if (!recurringExpenses.value.find((e) => e.category === 'Rent')) {
+        addRecurringExpense('Rent', 1, 0, 'Monthly rent payment')
+      }
+    }
+
+    // Initialize rent as a recurring expense if not present
+    ensureRentExpense()
+
+    function setRentAmount(amount: number) {
+      setRecurringExpenseAmount('Rent', amount)
+    }
+
+    function setRecurringRentDay(day: number) {
+      setRecurringExpenseDay('Rent', day)
+    }
+
+    function rebuildRecurringTransactions() {
+      // Remove all recurring transactions
+      transactionHistory.value = transactionHistory.value.filter((t) => !t.isRecurring)
+      recurringExpenses.value.forEach((expense) => {
+        const cat = expense.category === 'rent' ? 'Rent' : expense.category
+        if (expense.amount > 0) {
+          const date = new Date(expense.recurringDate)
+          transactionHistory.value.push({
+            id: Date.now() + Math.random(), // Ensure unique IDs
+            category: cat,
+            amount: expense.amount,
+            date: date.toLocaleDateString(),
+            isRecurring: true,
+          })
+        }
       })
     }
-  }
 
-  /**
-   * Returns the recurring date for any given month/year based on the stored day.
-   * Useful when calculating payments for future months.
-   */
-  function getRecurringDateForMonth(year: number, month: number) {
-    return computeRecurringDate(monthlyEarnings.value.recurringDay, year, month)
-  }
+    function addRecurringTransaction(category: string, amount: number, recurringDate: string) {
+      rebuildRecurringTransactions()
+    }
 
-  const leftoverBudget = computed<number>(
-    () =>
-      monthlyEarnings.value.amount -
-      transactionHistory.value.reduce((total, transaction) => total + transaction.amount, 0),
-  )
+    /**
+     * Returns the recurring date for any given month/year based on the stored day.
+     * Useful when calculating payments for future months.
+     */
+    function getRecurringDateForMonth(year: number, month: number) {
+      return computeRecurringDate(monthlyEarnings.value.recurringDay, year, month)
+    }
 
-  return {
-    darkMode,
-    currency,
-    transactionHistory,
-    monthlyEarnings,
-    monthlyExpenses,
-    leftoverBudget,
-    setRecurringDay,
-    getRecurringDateForMonth,
-    setRecurringRentDay,
-    setRentAmount,
-    language,
-  }
-})
+    const leftoverBudget = computed<number>(
+      () =>
+        monthlyEarnings.value.amount -
+        transactionHistory.value.reduce((total, transaction) => total + transaction.amount, 0),
+    )
+
+    const totalExpenses = computed<number>(
+      () => monthlyEarnings.value.amount - leftoverBudget.value,
+    )
+
+    return {
+      darkMode,
+      currency,
+      transactionHistory,
+      monthlyEarnings,
+      recurringExpenses,
+      leftoverBudget,
+      setRecurringDay,
+      getRecurringDateForMonth,
+      setRecurringExpenseDay,
+      totalExpenses,
+      setRecurringExpenseAmount,
+      addRecurringExpense,
+      setRentAmount,
+      setRecurringRentDay,
+      ensureRentExpense,
+      language,
+    }
+  },
+  {
+    persist: true,
+  },
+)

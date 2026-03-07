@@ -13,7 +13,7 @@
             <tr v-for="(transaction, index) in globalsStore.transactionHistory" :key="index">
                 <td class="py-2 w-1/4 border-b">{{ transaction.date }}</td>
                 <td class="py-2 w-1/4 border-b">{{ globalsStore.currency === 'pound' ? '£' : globalsStore.currency ===
-                    'euro' ? '€' : '' }} {{ transaction.amount }} {{ globalsStore.currency === 'lei' ? 'lei' : '' }}
+                    'euro' ? '€' : '' }}{{ transaction.amount }} {{ globalsStore.currency === 'lei' ? 'lei' : '' }}
                 </td>
                 <td class="py-2 w-1/4 border-b">{{ transaction.category }}</td>
                 <td class="py-2 w-1/4 border-b">
