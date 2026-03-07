@@ -1,9 +1,5 @@
 <template>
-    <h1 class="p-2 text-2xl font-bold">{{ globalsStore.language === 'en' ? 'Settings' : 'Setări' }}</h1>
-    <p class="p-2">{{ globalsStore.language === 'en' ?
-        'Here you can adjust your preferences and configure the app to suit your needs.' :
-        'Aici poți ajusta preferințele tale și configura aplicația pentru a se potrivi nevoilor tale.' }}</p>
-    <div class="p-2 flex-col items-center mt-4">
+    <div class=" flex-col items-center mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto ">
         <div class="flex items-center text-center mb-4">
             <label for="darkMode">{{ globalsStore.language === 'en' ? 'Enable Dark Mode:' : 'Activează Modul Întunecat:'
             }}</label>

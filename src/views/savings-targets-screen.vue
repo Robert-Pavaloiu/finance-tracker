@@ -1,7 +1,4 @@
 <template>
-    <h1 class="p-2 text-2xl font-bold">{{ globalsStore.language === 'en' ?
-        'Savings Targets' : 'Ținte de Economii' }}
-    </h1>
     <p class="p-2">{{ globalsStore.language === 'en' ?
         'Set your savings goals and track your progress towards achieving them.' :
         'Setează-ți obiectivele de economii și urmărește progresul către realizarea lor.' }}</p>

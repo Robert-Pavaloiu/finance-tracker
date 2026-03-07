@@ -6,9 +6,6 @@
             'Recurring Day:' : ' Ziua Recurentă:' }}</label>
         <input type="number" id="rentRecurringDay" v-model.number="rentRecurringDay" :min="1" :max="maxDay"
             class="border rounded p-2" />
-        <p class="mt-1 text-sm text-gray-600 px-2">
-            {{ globalsStore.language === 'en' ? 'Selected date:' : 'Data selectată:' }} {{ formattedRentDate }}
-        </p>
     </div>
 </template>
 
@@ -50,12 +47,5 @@ watch(rentRecurringDay, (newDay) => {
     if (typeof newDay === 'number' && newDay >= 1) {
         globalsStore.setRecurringExpenseDay('Rent', newDay)
     }
-})
-
-const formattedRentDate = computed(() => {
-    const rent = globalsStore.recurringExpenses.find(e => e.category === 'Rent')
-    if (!rent || !rent.recurringDate) return ''
-    const d = new Date(rent.recurringDate)
-    return isNaN(d.getTime()) ? '' : d.toLocaleDateString()
 })
 </script>

@@ -7,7 +7,7 @@
         </div>
         <div class="p-2">
             <label for="recurringCategory" class="pr-2">{{ globalsStore.language === 'en' ? 'Category:' : 'Categorie:'
-            }}</label>
+                }}</label>
             <select id="recurringCategory" v-model="recurringTransaction.category" class="border rounded p-2">
                 <option value="" disabled>{{ globalsStore.language === 'en' ? 'Select a category'
                     : 'Selectează o categorie' }}</option>
@@ -29,11 +29,9 @@
                 : 'Ziua Recurentă: ' }}</label>
             <input type="number" id="recurringDay" v-model.number="recurringTransaction.recurringDay" :min="1" :max="31"
                 class="border rounded p-2" />
-            <p class="mt-1 text-sm text-gray-600 px-2">
-                {{ globalsStore.language === 'en' ? 'Selected date:' : 'Data selectată:' }} {{ formattedRecurringDate }}
-            </p>
         </div>
-        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white p-2 m-2 rounded"
+        <button type="submit"
+            class="bg-green-600 hover:bg-green-700 text-white p-2 m-2 rounded-lg shadow-lg border-2 border-green-800"
             v-on:click.prevent="addRecurringTransaction">{{ globalsStore.language === 'en' ?
                 'Add Recurring Transaction' : 'Adaugă Tranzacție Recurentă' }}</button>
     </form>
@@ -41,13 +39,10 @@
 
 <script setup lang="ts">
 import { useGlobalsStore } from '@/stores/globals-store';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { RecurringTransactionCategory } from '@/enums';
 
 const globalsStore = useGlobalsStore();
-
-const currentYear = new Date().getFullYear()
-const currentMonth = new Date().getMonth()
 
 const recurringTransaction = ref<{
     amount: number;
@@ -60,14 +55,6 @@ const recurringTransaction = ref<{
     description: '',
     recurringDay: 1
 });
-
-const formattedRecurringDate = computed(() => {
-    const day = recurringTransaction.value.recurringDay
-    const maxDay = new Date(currentYear, currentMonth + 1, 0).getDate()
-    const adjustedDay = Math.min(day, maxDay)
-    const date = new Date(currentYear, currentMonth, adjustedDay)
-    return isNaN(date.getTime()) ? '' : date.toLocaleDateString()
-})
 
 const addRecurringTransaction = () => {
     if (recurringTransaction.value.category && recurringTransaction.value.amount > 0) {
