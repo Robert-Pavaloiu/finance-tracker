@@ -10,12 +10,9 @@ A personal finance tracking web application built with Vue 3 and TypeScript. Tra
 
 - **Transaction management** — add and delete transactions with a category, amount, and date
 - **Expense distribution** — pie chart breaking down spending by category with remaining budget visualised
-- **Summary bar** — at-a-glance view of total income, total expenses, and current balance
 - **Budget screen** — configure monthly earnings and recurring expenses (e.g. rent) with automatic transaction generation
-- **Savings targets** — set and track progress toward personal savings goals
 - **Multi-currency support** — switch between currencies in settings
 - **Multilingual** — full English and Romanian language support
-- **Dark mode** — toggle between light and dark themes
 - **Persistent data** — all data is saved to localStorage and survives page refreshes
 
 ---
@@ -103,3 +100,4 @@ This app has no backend. All data is persisted locally in the browser using `loc
 - [ ] Savings Targets
 - [ ] CSV export
 - [ ] Mobile responsive polish
+- [ ] Dark Mode Support
