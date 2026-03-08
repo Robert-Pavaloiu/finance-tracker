@@ -2,6 +2,11 @@
     <h1 class="text-3xl font-bold text-center mt-6">{{ globalsStore.language === 'en' ? 'Settings' : 'Setări' }}</h1>
     <div class="flex-col items-center mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto ">
         <div class="flex items-center text-center mb-4">
+            <label for="darkMode" class="block mr-2">{{ globalsStore.language === 'en' ?
+                'Dark Mode:' : 'Mod Întunecat: ' }}</label>
+            <input type="checkbox" id="darkMode" v-model="globalsStore.darkMode" class="ml-2" />
+        </div>
+        <div class="flex items-center text-center mb-4">
             <label for="currency" class="block mr-2">{{ globalsStore.language === 'en' ?
                 'Preferred Currency:' : 'Moneda Preferată: ' }}</label>
             <select v-model="globalsStore.currency" class="mt-2 p-1 border rounded">

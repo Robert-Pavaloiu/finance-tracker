@@ -1,6 +1,8 @@
+import type { RecurringCategories, TransactionCategory } from './enums'
+
 export type Transaction = {
-  id: number
-  category: string
+  id: string
+  category: TransactionCategory
   amount: number
   date?: string
   isRecurring?: boolean
@@ -17,7 +19,7 @@ export type MonthlyEarnings = {
 }
 
 export type RecurringExpense = {
-  category: string
+  category: (typeof RecurringCategories)[number]
   description?: string
   /** numeric day of month the expense recurs (1-31) */
   recurringDay: number
@@ -27,6 +29,8 @@ export type RecurringExpense = {
 }
 
 export type Language = 'en' | 'ro'
+
+export type Contribution = { date: string; amount: number }
 
 export interface GlobalsState {
   currency: Currency
@@ -38,10 +42,13 @@ export interface GlobalsState {
   totalExpenses: number
   setRecurringDay: (day: number) => void
   getRecurringDateForMonth: (year: number, month: number) => string
-  setRecurringExpenseDay: (category: string, day: number) => void
-  setRecurringExpenseAmount: (category: string, amount: number) => void
+  setRecurringExpenseDay: (category: (typeof RecurringCategories)[number], day: number) => void
+  setRecurringExpenseAmount: (
+    category: (typeof RecurringCategories)[number],
+    amount: number,
+  ) => void
   addRecurringExpense: (
-    category: string,
+    category: (typeof RecurringCategories)[number],
     recurringDay: number,
     amount: number,
     description?: string,
@@ -49,13 +56,16 @@ export interface GlobalsState {
   setRentAmount: (amount: number) => void
   setRecurringRentDay: (day: number) => void
   ensureRentExpense: () => void
+  editTransaction: (id: string, updates: Partial<Transaction>) => void
+  editRecurringExpense: (index: number, updates: Partial<RecurringExpense>) => void
+  darkMode: boolean
 }
 
 export interface SavingsState {
   target: number
   targetDate: string
   startingAmount: number
-  contributions: { date: string; amount: number }[]
+  contributions: Contribution[]
   totalSaved: number
   remainingAmount: number
   monthsRemaining: number
@@ -63,4 +73,5 @@ export interface SavingsState {
   getTotalUpToContributionIndex: (index: number) => number
   getRequiredMonthlyContributionByDate: (index: number, date: string) => number
   getRemainingByIndex: (index: number) => number
+  editContribution: (index: number, updates: Partial<{ date: string; amount: number }>) => void
 }

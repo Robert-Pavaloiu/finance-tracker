@@ -4,18 +4,21 @@
             <RouterLink to="/" class="text-white text-lg font-bold">Finance Tracker</RouterLink>
             <ul class="flex space-x-4">
                 <li>
-                    <RouterLink to="/budgets" class="text-gray-300 hover:text-white">{{ globalsStore.language === 'en' ?
-                        'Budget' : 'Buget' }}</RouterLink>
+                    <RouterLink to="/budgets" class="text-gray-300 hover:text-gray-200"
+                        active-class="text-white border-b border-white">{{ globalsStore.language === 'en' ?
+                            'Budget' : 'Buget' }}</RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/savings-targets" class="text-gray-300 hover:text-white">
+                    <RouterLink to="/savings-targets" class="text-gray-300 hover:text-gray-200"
+                        active-class="text-white border-b border-white">
                         {{ globalsStore.language === 'en' ? 'Savings Targets' : 'Ținte de Economii' }}
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/settings" class="text-gray-300 hover:text-white">{{ globalsStore.language === 'en'
-                        ?
-                        'Settings' : 'Setări' }}</RouterLink>
+                    <RouterLink to="/settings" class="text-gray-300 hover:text-gray-200"
+                        active-class="text-white border-b border-white">{{ globalsStore.language === 'en'
+                            ?
+                            'Settings' : 'Setări' }}</RouterLink>
                 </li>
             </ul>
         </div>

@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useGlobalsStore } from '@/stores/globals-store'
+import { TransactionCategory } from '@/enums'
 
 const globalsStore = useGlobalsStore()
 
@@ -21,7 +22,7 @@ const currentMonth = new Date().getMonth()
 // maximum days in the current month; used to constrain the input
 const maxDay = computed(() => new Date(currentYear, currentMonth + 1, 0).getDate())
 
-const rentExpense = computed(() => globalsStore.recurringExpenses.find(e => e.category === 'Rent'))
+const rentExpense = computed(() => globalsStore.recurringExpenses.find(e => e.category === TransactionCategory.Rent))
 const rentAmount = ref(rentExpense.value?.amount || 0)
 const rentRecurringDay = ref(rentExpense.value?.recurringDay || 1)
 let isUpdatingFromStore = false
@@ -38,14 +39,14 @@ watch(rentExpense, (newExpense) => {
 watch(rentAmount, (newAmount) => {
     if (isUpdatingFromStore) return
     if (typeof newAmount === 'number' && newAmount >= 0) {
-        globalsStore.setRecurringExpenseAmount('Rent', newAmount)
+        globalsStore.setRecurringExpenseAmount(TransactionCategory.Rent, newAmount)
     }
 })
 
 watch(rentRecurringDay, (newDay) => {
     if (isUpdatingFromStore) return
     if (typeof newDay === 'number' && newDay >= 1) {
-        globalsStore.setRecurringExpenseDay('Rent', newDay)
+        globalsStore.setRecurringExpenseDay(TransactionCategory.Rent, newDay)
     }
 })
 </script>

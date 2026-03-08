@@ -7,12 +7,12 @@
         </div>
         <div class="p-2">
             <label for="recurringCategory" class="pr-2">{{ globalsStore.language === 'en' ? 'Category:' : 'Categorie:'
-            }}</label>
+                }}</label>
             <select id="recurringCategory" v-model="recurringTransaction.category" class="border rounded p-2">
                 <option value="" disabled>{{ globalsStore.language === 'en' ? 'Select a category'
                     : 'Selectează o categorie' }}</option>
                 <option
-                    v-for="category in Object.values(RecurringTransactionCategory).filter(cat => cat !== RecurringTransactionCategory.Rent)"
+                    v-for="category in Object.values(RecurringCategories).filter(cat => cat !== RecurringCategories[0])"
                     :key="category" :value="category">
                     {{ translateCategory(category) }}
                 </option>
@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
-import { RecurringTransactionCategory } from '@/enums';
+import { RecurringCategories } from '@/enums';
 import { useCategory } from '@/composables/useCategory'
 const { translateCategory } = useCategory()
 
@@ -48,7 +48,7 @@ const globalsStore = useGlobalsStore();
 
 const recurringTransaction = ref<{
     amount: number;
-    category: RecurringTransactionCategory | '';
+    category: typeof RecurringCategories[number] | '';
     description: string;
     recurringDay: number;
 }>({
@@ -61,7 +61,7 @@ const recurringTransaction = ref<{
 const addRecurringTransaction = () => {
     if (recurringTransaction.value.category && recurringTransaction.value.amount > 0) {
         globalsStore.addRecurringExpense(
-            recurringTransaction.value.category as RecurringTransactionCategory,
+            recurringTransaction.value.category as typeof RecurringCategories[number],
             recurringTransaction.value.recurringDay,
             recurringTransaction.value.amount,
             recurringTransaction.value.description || undefined

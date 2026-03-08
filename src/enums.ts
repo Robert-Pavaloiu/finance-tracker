@@ -9,16 +9,16 @@ export enum TransactionCategory {
   Other = 'Other',
 }
 
-export enum RecurringTransactionCategory {
-  Rent = 'Rent',
-  Utilities = 'Utilities',
-  Subscriptions = 'Subscriptions',
-}
+export const RecurringCategories = [
+  TransactionCategory.Rent,
+  TransactionCategory.Utilities,
+  TransactionCategory.Subscriptions,
+] as const
 
-export enum NonRecurringTransactionCategory {
-  Food = 'Food',
-  Entertainment = 'Entertainment',
-  Transportation = 'Transportation',
-  Education = 'Education',
-  Other = 'Other',
-}
+export const NonRecurringCategories = [
+  TransactionCategory.Food,
+  TransactionCategory.Entertainment,
+  TransactionCategory.Transportation,
+  TransactionCategory.Education,
+  TransactionCategory.Other,
+] as const

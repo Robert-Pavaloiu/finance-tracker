@@ -44,6 +44,16 @@ export const useSavingsStore: () => SavingsState = defineStore(
       if (monthsRemaining === 0) return getRemainingByIndex(index)
       return Math.round(getRemainingByIndex(index) / monthsRemaining)
     }
+
+    function editContribution(index: number, updates: Partial<{ date: string; amount: number }>) {
+      if (contributions.value[index]) {
+        contributions.value[index] = {
+          ...contributions.value[index],
+          ...updates,
+        }
+      }
+    }
+
     return {
       target,
       targetDate,
@@ -56,6 +66,7 @@ export const useSavingsStore: () => SavingsState = defineStore(
       getTotalUpToContributionIndex,
       getRequiredMonthlyContributionByDate,
       getRemainingByIndex,
+      editContribution,
     }
   },
   {

@@ -41,7 +41,18 @@ const chartData = computed(() => {
     labels.push(globalsStore.language === 'en' ? 'Leftover' : 'Suma Rămasă');
     data.push(globalsStore.leftoverBudget ?? 0);
 
-    const colors = labels.map((_, i) => `hsl(${i * 360 / labels.length}, 70%, 50%)`);
+    const palette = [
+        '#ef4444', // red 
+        '#3b82f6', // blue 
+        '#a855f7', // purple 
+        '#22c55e', // green 
+        '#f97316', // orange 
+        '#06b6d4', // cyan 
+        '#eab308', // yellow 
+        '#6b7280', // grey 
+        '#d1d5db', // light grey — Leftover
+    ]
+    const colors = labels.map((_, i) => palette[i % palette.length])
 
     return {
         labels,

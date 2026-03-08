@@ -1,6 +1,6 @@
 <template>
     <h1 class="p-2 text-xl font-bold text-center mt-4">{{ globalsStore.language === 'en' ? 'Transactions' : 'Tranzacții'
-        }}
+    }}
     </h1>
     <div class="w-full bg-gray-100 max-w-5xl mx-auto shadow-lg rounded-lg border">
         <table class="w-full border-collapse mx-auto">
@@ -13,11 +13,16 @@
                 </tr>
             </thead>
             <tbody class="text-center bg-gray-100" v-show="isExpanded">
-                <tr v-for="(transaction, index) in globalsStore.transactionHistory" :key="index">
+                <tr v-for="(transaction, index) in globalsStore.transactionHistory" :key="transaction.id">
                     <td class="py-2 w-1/4 border-b">{{ formatDate(transaction.date) }}</td>
                     <td class="py-2 w-1/4 border-b">{{ formatAmount(transaction.amount) }}</td>
                     <td class="py-2 w-1/4 border-b">{{ translateCategory(transaction.category) }}</td>
                     <td class="py-2 w-1/4 border-b">
+                        <button
+                            class="bg-blue-600 hover:bg-blue-700 text-white p-1 px-2 rounded-lg shadow-lg border-2 border-blue-800 mr-2"
+                            @click="openEdit(transaction)">
+                            {{ globalsStore.language === 'en' ? 'Edit' : 'Editează' }}
+                        </button>
                         <button
                             class="bg-red-600 hover:bg-red-700 text-white p-1 rounded-lg shadow-lg border-2 border-red-800"
                             @click="deleteTransaction(index)">{{ globalsStore.language === 'en' ? 'Delete' : 'Șterge'
@@ -37,8 +42,12 @@
             @click="toggleClearAllModal">
             {{ globalsStore.language === 'en' ? 'Clear All Transactions' : 'Șterge Toate Tranzacțiile' }}
         </button>
-        <ClearAllTransactionsModal v-if="showClearAllModal" @close="toggleClearAllModal"
-            @confirm-clear="clearAllTransactions" />
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50" v-if="showClearAllModal">
+            <ClearAllTransactionsModal @close="toggleClearAllModal" @confirm-clear="clearAllTransactions" />
+        </div>
+
+        <EditTransactionModal v-if="editingTransaction" :transaction="editingTransaction"
+            @close="editingTransaction = null" @save="saveEdit" />
     </div>
 </template>
 <script setup lang="ts">
@@ -48,6 +57,8 @@ import { ref } from 'vue';
 import { useDate } from '@/composables/useDate';
 import { useCurrency } from '@/composables/useCurrency';
 import { useCategory } from '@/composables/useCategory';
+import EditTransactionModal from '@/components/edit-transaction-modal.vue'
+import type { Transaction } from '@/types'
 
 const { translateCategory } = useCategory();
 
@@ -59,6 +70,20 @@ const globalsStore = useGlobalsStore();
 const isExpanded = ref(true);
 
 const showClearAllModal = ref(false);
+
+const editingTransaction = ref<Transaction | null>(null)
+
+const openEdit = (transaction: Transaction) => {
+    editingTransaction.value = transaction
+}
+
+const saveEdit = (updates: Partial<Transaction>) => {
+    if (editingTransaction.value) {
+        globalsStore.editTransaction(editingTransaction.value.id, updates)
+        editingTransaction.value = null
+    }
+}
+
 
 const clearAllTransactions = () => {
     globalsStore.transactionHistory = globalsStore.transactionHistory.filter(

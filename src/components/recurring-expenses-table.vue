@@ -25,6 +25,11 @@
                     <td class="py-2 w-1/5 border-b">{{ transaction.description }}</td>
                     <td class="py-2 w-1/5 border-b">
                         <button
+                            class="bg-blue-600 hover:bg-blue-700 text-white p-1 rounded-lg shadow-lg border-2 border-blue-800 mr-2"
+                            @click="openEdit(transaction, index)">
+                            {{ globalsStore.language === 'en' ? 'Edit' : 'Editează' }}
+                        </button>
+                        <button
                             class="bg-red-600 hover:bg-red-700 text-white p-1 rounded-lg shadow-lg border-2 border-red-800"
                             @click="deleteTransaction(index)">{{ globalsStore.language === 'en' ? 'Delete' : 'Șterge'
                             }}</button>
@@ -39,19 +44,37 @@
                     : 'Ascunde') : (globalsStore.language === 'en' ? 'Show' : 'Afișează') }} {{ globalsStore.language === 'en' ?
                 'Recurring Transactions' : 'Tranzacții Recurente' }}
         </button>
-    </div>
+        <EditRecurringExpenseModal v-if="editingExpense" :expense="editingExpense.expense"
+            @close="editingExpense = null" @save="saveEdit" />
+    </div>ss
 </template>
 <script setup lang="ts">
 import { useGlobalsStore } from '@/stores/globals-store';
 import { useCurrency } from '@/composables/useCurrency';
 import { ref } from 'vue';
 import { useCategory } from '@/composables/useCategory'
+import EditRecurringExpenseModal from '@/components/edit-recurring-expense-modal.vue'
+import type { RecurringExpense } from '@/types'
+
 const { translateCategory } = useCategory()
 
 const globalsStore = useGlobalsStore();
 const { formatAmount } = useCurrency();
 
 const isExpanded = ref(true);
+
+const editingExpense = ref<{ expense: RecurringExpense; index: number } | null>(null)
+
+const openEdit = (expense: RecurringExpense, index: number) => {
+    editingExpense.value = { expense, index }
+}
+
+const saveEdit = (updates: Partial<RecurringExpense>) => {
+    if (editingExpense.value) {
+        globalsStore.editRecurringExpense(editingExpense.value.index, updates)
+        editingExpense.value = null
+    }
+}
 
 
 const deleteTransaction = (index: number) => {

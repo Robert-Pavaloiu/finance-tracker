@@ -8,6 +8,7 @@ import type {
   RecurringExpense,
   Language,
 } from '@/types'
+import { RecurringCategories, TransactionCategory } from '@/enums'
 
 function computeRecurringDate(
   day: number,
@@ -24,10 +25,10 @@ function computeRecurringDate(
 export const useGlobalsStore: () => GlobalsState = defineStore(
   'globals',
   () => {
-
     const language = ref<Language>('en')
     const currency = ref<Currency>('pound')
     const transactionHistory = ref<Transaction[]>([])
+    const darkMode = ref<boolean>(false)
 
     // default recurring day: today
     const defaultDay = new Date().getDate()
@@ -50,9 +51,9 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
         expense.recurringDay = day
         expense.recurringDate = computeRecurringDate(day)
         // if rent, drop any other rent entries
-        if (category.toLowerCase() === 'rent') {
+        if (category === TransactionCategory.Rent) {
           recurringExpenses.value = recurringExpenses.value.filter(
-            (e) => e === expense || e.category.toLowerCase() !== 'rent',
+            (e) => e === expense || e.category !== TransactionCategory.Rent,
           )
         }
         rebuildRecurringTransactions()
@@ -63,9 +64,9 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
       const expense = recurringExpenses.value.find((e) => e.category === category)
       if (expense) {
         expense.amount = amount
-        if (category.toLowerCase() === 'rent') {
+        if (category === TransactionCategory.Rent) {
           recurringExpenses.value = recurringExpenses.value.filter(
-            (e) => e === expense || e.category.toLowerCase() !== 'rent',
+            (e) => e === expense || e.category !== TransactionCategory.Rent,
           )
         }
         rebuildRecurringTransactions()
@@ -73,15 +74,15 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
     }
 
     function addRecurringExpense(
-      category: string,
+      category: (typeof RecurringCategories)[number],
       recurringDay: number,
       amount: number,
       description?: string,
     ) {
       // Only enforce uniqueness for Rent
-      if (category.toLowerCase() === 'rent') {
+      if (category === TransactionCategory.Rent) {
         const existingRent = recurringExpenses.value.find(
-          (e) => e.category.toLowerCase() === 'rent',
+          (e) => e.category === TransactionCategory.Rent,
         )
         if (existingRent) return
       }
@@ -92,8 +93,8 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
     }
 
     function ensureRentExpense() {
-      if (!recurringExpenses.value.find((e) => e.category === 'Rent')) {
-        addRecurringExpense('Rent', 1, 0, 'Monthly rent payment')
+      if (!recurringExpenses.value.find((e) => e.category === TransactionCategory.Rent)) {
+        addRecurringExpense(TransactionCategory.Rent, 1, 0, 'Monthly rent payment')
       }
     }
 
@@ -101,22 +102,25 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
     ensureRentExpense()
 
     function setRentAmount(amount: number) {
-      setRecurringExpenseAmount('Rent', amount)
+      setRecurringExpenseAmount(TransactionCategory.Rent, amount)
     }
 
     function setRecurringRentDay(day: number) {
-      setRecurringExpenseDay('Rent', day)
+      setRecurringExpenseDay(TransactionCategory.Rent, day)
     }
 
     function rebuildRecurringTransactions() {
       // Remove all recurring transactions
       transactionHistory.value = transactionHistory.value.filter((t) => !t.isRecurring)
       recurringExpenses.value.forEach((expense) => {
-        const cat = expense.category === 'rent' ? 'Rent' : expense.category
+        const cat =
+          expense.category === TransactionCategory.Rent
+            ? TransactionCategory.Rent
+            : expense.category
         if (expense.amount > 0) {
           const date = new Date(expense.recurringDate)
           transactionHistory.value.push({
-            id: Date.now() + Math.random(), // Ensure unique IDs
+            id: crypto.randomUUID(),
             category: cat,
             amount: expense.amount,
             date: date.toLocaleDateString(),
@@ -143,6 +147,26 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
       () => monthlyEarnings.value.amount - leftoverBudget.value,
     )
 
+    function editTransaction(id: string, updates: Partial<Transaction>) {
+      const index = transactionHistory.value.findIndex((t) => t.id === id)
+      if (index !== -1 && transactionHistory.value[index]) {
+        transactionHistory.value[index] = {
+          ...transactionHistory.value[index],
+          ...updates,
+        }
+      }
+    }
+
+    function editRecurringExpense(index: number, updates: Partial<RecurringExpense>) {
+      if (recurringExpenses.value[index]) {
+        recurringExpenses.value[index] = {
+          ...recurringExpenses.value[index],
+          ...updates,
+        }
+        rebuildRecurringTransactions()
+      }
+    }
+
     return {
       currency,
       transactionHistory,
@@ -158,7 +182,10 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
       setRentAmount,
       setRecurringRentDay,
       ensureRentExpense,
+      editTransaction,
+      editRecurringExpense,
       language,
+      darkMode,
     }
   },
   {
