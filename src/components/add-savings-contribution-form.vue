@@ -1,8 +1,9 @@
 <template>
-    <h1 class="p-2 text-xl font-bold text-center">{{ globalsStore.language === 'en' ? 'Add Contribution'
+    <h1 class="p-2 text-xl font-bold text-center dark:text-white">{{ globalsStore.language === 'en' ? 'Add Contribution'
         : 'Adaugă Contribuție' }}
     </h1>
-    <form class="bg-gray-100 border p-6 shadow-lg rounded-lg max-w-xl mx-auto ">
+    <form
+        class="bg-gray-100 border p-6 shadow-lg rounded-lg max-w-xl mx-auto dark:bg-gray-800 dark:border-gray-700 dark:text-white">
         <div class="mb-4">
             <label for="contribution" class="pr-2">{{ globalsStore.language === 'en' ? 'Contribution Amount:' :
                 'Suma Contribuției:' }}</label>

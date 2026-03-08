@@ -1,5 +1,5 @@
 <template>
-    <nav class="bg-gray-800 p-4 sticky top-0 z-50 shadow-lg">
+    <nav class="bg-gray-800 dark:bg-gray-950 p-4 sticky top-0 z-50 shadow-lg">
         <div class="container mx-auto flex items-center justify-between">
             <RouterLink to="/" class="text-white text-lg font-bold">Finance Tracker</RouterLink>
             <ul class="flex space-x-4">

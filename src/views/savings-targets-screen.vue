@@ -1,5 +1,5 @@
 <template>
-    <h1 class="text-3xl font-bold text-center my-6">{{ globalsStore.language === 'en' ?
+    <h1 class="text-3xl font-bold text-center my-6 dark:text-white">{{ globalsStore.language === 'en' ?
         'Savings Targets' : 'Ținte de Economii' }}</h1>
     <SavingsProgressBar />
     <br />

@@ -1,23 +1,32 @@
 <template>
-    <h1 class="p-2 text-xl font-bold text-center mt-4">{{ globalsStore.language === 'en' ? 'Transactions' : 'Tranzacții'
-    }}
+    <h1 class="p-2 text-xl font-bold text-center mt-4 dark:text-white">{{ globalsStore.language === 'en' ?
+        'Transactions' :
+        'Tranzacții'
+        }}
     </h1>
-    <div class="w-full bg-gray-100 max-w-5xl mx-auto shadow-lg rounded-lg border">
+    <div class="w-full bg-gray-100 dark:bg-gray-800 max-w-5xl mx-auto shadow-lg rounded-lg border dark:border-gray-700">
         <table class="w-full border-collapse mx-auto">
-            <thead class="bg-gray-300 text-center">
+            <thead class="bg-gray-300 text-center dark:bg-gray-700 dark:text-white">
                 <tr>
-                    <th class="py-2 w-1/4 border-b">{{ globalsStore.language === 'en' ? 'Date' : 'Data' }}</th>
-                    <th class="py-2 w-1/4 border-b">{{ globalsStore.language === 'en' ? 'Amount' : 'Sumă' }}</th>
-                    <th class="py-2 w-1/4 border-b">{{ globalsStore.language === 'en' ? 'Category' : 'Categorie' }}</th>
-                    <th class="py-2 w-1/4 border-b">{{ globalsStore.language === 'en' ? 'Actions' : 'Acțiuni' }}</th>
+                    <th class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{ globalsStore.language ===
+                        'en' ? 'Date' : 'Data' }}</th>
+                    <th class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{ globalsStore.language ===
+                        'en' ? 'Amount' : 'Sumă' }}</th>
+                    <th class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{ globalsStore.language ===
+                        'en' ? 'Category' : 'Categorie' }}</th>
+                    <th class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{ globalsStore.language ===
+                        'en' ? 'Actions' : 'Acțiuni' }}</th>
                 </tr>
             </thead>
-            <tbody class="text-center bg-gray-100" v-show="isExpanded">
+            <tbody class="text-center bg-gray-100 dark:bg-gray-800" v-show="isExpanded">
                 <tr v-for="(transaction, index) in globalsStore.transactionHistory" :key="transaction.id">
-                    <td class="py-2 w-1/4 border-b">{{ formatDate(transaction.date) }}</td>
-                    <td class="py-2 w-1/4 border-b">{{ formatAmount(transaction.amount) }}</td>
-                    <td class="py-2 w-1/4 border-b">{{ translateCategory(transaction.category) }}</td>
-                    <td class="py-2 w-1/4 border-b">
+                    <td class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{
+                        formatDate(transaction.date) }}</td>
+                    <td class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{
+                        formatAmount(transaction.amount) }}</td>
+                    <td class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">{{
+                        translateCategory(transaction.category) }}</td>
+                    <td class="py-2 w-1/4 border-b dark:border-gray-700 dark:text-gray-200">
                         <button
                             class="bg-blue-600 hover:bg-blue-700 text-white p-1 px-2 rounded-lg shadow-lg border-2 border-blue-800 mr-2"
                             @click="openEdit(transaction)">

@@ -1,10 +1,19 @@
 <template>
-    <h1 class="text-3xl font-bold text-center mt-6">{{ globalsStore.language === 'en' ? 'Settings' : 'Setări' }}</h1>
-    <div class="flex-col items-center mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto ">
-        <div class="flex items-center text-center mb-4">
-            <label for="darkMode" class="block mr-2">{{ globalsStore.language === 'en' ?
-                'Dark Mode:' : 'Mod Întunecat: ' }}</label>
-            <input type="checkbox" id="darkMode" v-model="globalsStore.darkMode" class="ml-2" />
+    <h1 class="text-3xl font-bold text-center mt-6 dark:text-white">{{ globalsStore.language === 'en' ? 'Settings' :
+        'Setări' }}</h1>
+    <div
+        class="flex-col items-center mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto dark:bg-gray-800 dark:border-gray-700 dark:text-white">
+        <div class="flex items-center my-4">
+            <label class="mr-3 dark:text-gray-200">
+                {{ globalsStore.language === 'en' ? 'Enable Dark Mode:' : 'Activează Modul Întunecat:' }}
+            </label>
+            <button @click="globalsStore.darkMode = !globalsStore.darkMode"
+                class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none"
+                :class="globalsStore.darkMode ? 'bg-blue-600' : 'bg-gray-300'">
+                <span
+                    class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-300"
+                    :class="globalsStore.darkMode ? 'translate-x-6' : 'translate-x-0'" />
+            </button>
         </div>
         <div class="flex items-center text-center mb-4">
             <label for="currency" class="block mr-2">{{ globalsStore.language === 'en' ?

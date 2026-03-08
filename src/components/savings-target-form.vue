@@ -1,7 +1,9 @@
 <template>
-    <h1 class="p-2 text-xl font-bold text-center">{{ globalsStore.language === 'en' ? 'Target' : 'Obiectiv' }}
+    <h1 class="p-2 text-xl font-bold text-center dark:text-white">{{ globalsStore.language === 'en' ? 'Target' :
+        'Obiectiv' }}
     </h1>
-    <div class="bg-gray-100 border p-6 shadow-lg rounded-lg max-w-xl mx-auto ">
+    <div
+        class="bg-gray-100 border p-6 shadow-lg rounded-lg max-w-xl mx-auto dark:bg-gray-800 dark:border-gray-700 dark:text-white">
         <div class="mb-4">
             <label for="Target" class="px-2">{{ globalsStore.language === 'en' ?
                 'Savings Target:' : 'Obiectiv de Economii:' }}</label>
