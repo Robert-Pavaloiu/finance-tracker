@@ -51,3 +51,17 @@ export interface GlobalsState {
   setRecurringRentDay: (day: number) => void
   ensureRentExpense: () => void
 }
+
+export interface SavingsState {
+  target: number
+  targetDate: string
+  startingAmount: number
+  contributions: { date: string; amount: number }[]
+  totalSaved: number
+  remainingAmount: number
+  monthsRemaining: number
+  requiredMonthlyContribution: number
+  getTotalUpToContributionIndex: (index: number) => number
+  getRequiredMonthlyContributionByDate: (index: number, date: string) => number
+  getRemainingByIndex: (index: number) => number
+}

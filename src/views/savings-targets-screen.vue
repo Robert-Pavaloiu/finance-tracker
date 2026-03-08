@@ -1,14 +1,13 @@
 <template>
-    <p class="p-2">{{ globalsStore.language === 'en' ?
-        'Set your savings goals and track your progress towards achieving them.' :
-        'Setează-ți obiectivele de economii și urmărește progresul către realizarea lor.' }}</p>
-    <div class="p-2 flex-col items-center mt-4">
-        <!-- Savings targets form and display will go here -->
-        <p class="text-gray-500">{{ globalsStore.language === 'en' ?
-            'This feature is coming soon!' : 'Această funcție va fi disponibilă în curând!' }}</p>
-    </div>
+    <br />
+    <SavingsTargetForm />
+    <br />
+    <AddSavingsContributionForm />
+    <br />
+    <SavingsTrackerTable />
 </template>
 <script setup lang="ts">
-import { useGlobalsStore } from '@/stores/globals-store';
-const globalsStore = useGlobalsStore();
+import SavingsTargetForm from '@/components/savings-target-form.vue';
+import AddSavingsContributionForm from '@/components/add-savings-contribution-form.vue';
+import SavingsTrackerTable from '@/components/savings-tracker-table.vue';
 </script>

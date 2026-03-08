@@ -15,7 +15,7 @@ export enum RecurringTransactionCategory {
   Subscriptions = 'Subscriptions',
 }
 
-export enum NonRecurrringTransactionCategory {
+export enum NonRecurringTransactionCategory {
   Food = 'Food',
   Entertainment = 'Entertainment',
   Transportation = 'Transportation',

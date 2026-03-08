@@ -7,7 +7,7 @@
         <div class="p-2">
             <label for="category" class="pr-2">{{ globalsStore.language === 'en' ? 'Category:' : 'Categorie:' }}</label>
             <select id="category" v-model="transaction.category" class="border rounded p-2">
-                <option v-for="category in Object.values(NonRecurrringTransactionCategory)" :key="category"
+                <option v-for="category in Object.values(NonRecurringTransactionCategory)" :key="category"
                     :value="category">
                     {{ category }}
                 </option>
@@ -23,18 +23,18 @@
 <script setup lang="ts">
 import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
-import { NonRecurrringTransactionCategory } from '@/enums';
+import { NonRecurringTransactionCategory } from '@/enums';
 
 const globalsStore = useGlobalsStore();
 
 
-const transaction = ref<{ amount: number; category: NonRecurrringTransactionCategory }>({ amount: 0, category: NonRecurrringTransactionCategory.Other });
+const transaction = ref<{ amount: number; category: NonRecurringTransactionCategory }>({ amount: 0, category: NonRecurringTransactionCategory.Other });
 
 const addTransaction = () => {
     globalsStore.transactionHistory.push({
         ...transaction.value, date: new Date().toLocaleDateString(),
         id: globalsStore.transactionHistory.length + 1
     });
-    transaction.value = { amount: 0, category: NonRecurrringTransactionCategory.Other };
+    transaction.value = { amount: 0, category: NonRecurringTransactionCategory.Other };
 };
 </script>

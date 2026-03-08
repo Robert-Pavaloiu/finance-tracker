@@ -1,7 +1,7 @@
 <template>
     <h1 class="p-2 text-xl font-bold text-center mt-4">{{ globalsStore.language === 'en' ? 'Recurring Transactions' :
         'Tranzacții Recurente'
-    }}
+        }}
     </h1>
     <div class="w-full bg-gray-100 max-w-5xl mx-auto shadow-lg rounded-lg border">
         <table class="w-full border-collapse mx-auto">
@@ -19,7 +19,7 @@
             <tbody class="text-center bg-gray-100" v-show="isExpanded">
                 <tr v-for="(transaction, index) in globalsStore.recurringExpenses" :key="index">
                     <td class="py-2 w-1/5 border-b">{{ transaction.recurringDay }}{{ dayEndsIn(transaction.recurringDay)
-                        }}</td>
+                    }}</td>
                     <td class="py-2 w-1/5 border-b">{{ globalsStore.currency === 'pound' ? '£' :
                         globalsStore.currency === 'euro' ? '€' : '' }}{{ transaction.amount }}
                         {{ globalsStore.currency === 'lei' ? 'lei' : '' }}
@@ -40,7 +40,7 @@
             @click="isExpanded = !isExpanded"> {{
                 isExpanded ? (globalsStore.language === 'en' ? 'Hide'
                     : 'Ascunde') : (globalsStore.language === 'en' ? 'Show' : 'Afișează') }} {{ globalsStore.language === 'en' ?
-                'Transaction History' : 'Istoricul Tranzacțiilor' }}
+                'Recurring Transactions' : 'Tranzacții Recurente' }}
         </button>
     </div>
 </template>
