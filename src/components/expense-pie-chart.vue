@@ -13,6 +13,9 @@ import { Pie } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useGlobalsStore } from '@/stores/globals-store';
 import type { TooltipItem } from 'chart.js';
+import { useCategory } from '@/composables/useCategory'
+
+const { translateCategory } = useCategory()
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -32,10 +35,10 @@ const chartData = computed(() => {
         }
     });
 
-    const labels = Object.keys(categorySums);
+    const labels = Object.keys(categorySums).map(translateCategory)
     const data = Object.values(categorySums);
 
-    labels.push('Leftover');
+    labels.push(globalsStore.language === 'en' ? 'Leftover' : 'Suma Rămasă');
     data.push(globalsStore.leftoverBudget ?? 0);
 
     const colors = labels.map((_, i) => `hsl(${i * 360 / labels.length}, 70%, 50%)`);

@@ -9,9 +9,15 @@
             <select id="category" v-model="transaction.category" class="border rounded p-2">
                 <option v-for="category in Object.values(NonRecurringTransactionCategory)" :key="category"
                     :value="category">
-                    {{ category }}
+                    {{ translateCategory(category) }}
                 </option>
             </select>
+        </div>
+        <div>
+            <div>
+                <label for="date" class="pr-2">{{ globalsStore.language === 'en' ? 'Date:' : 'Data:' }}</label>
+                <input type="date" id="date" v-model="transaction.date" class="border rounded p-2" />
+            </div>
         </div>
         <button type="submit"
             class="bg-blue-600 hover:bg-blue-700 text-white p-2 m-2 rounded-lg shadow-lg border-2 border-blue-800"
@@ -24,17 +30,21 @@
 import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
 import { NonRecurringTransactionCategory } from '@/enums';
+import { useCategory } from '@/composables/useCategory'
+const { translateCategory } = useCategory()
 
 const globalsStore = useGlobalsStore();
 
 
-const transaction = ref<{ amount: number; category: NonRecurringTransactionCategory }>({ amount: 0, category: NonRecurringTransactionCategory.Other });
+const transaction = ref<{ amount: number; category: NonRecurringTransactionCategory; date?: string }>({ amount: 0, category: NonRecurringTransactionCategory.Other, date: new Date().toISOString().split('T')[0] });
 
 const addTransaction = () => {
-    globalsStore.transactionHistory.push({
-        ...transaction.value, date: new Date().toLocaleDateString(),
-        id: globalsStore.transactionHistory.length + 1
-    });
-    transaction.value = { amount: 0, category: NonRecurringTransactionCategory.Other };
+    if (transaction.value.amount > 0 && transaction.value.category && transaction.value.date) {
+        globalsStore.transactionHistory.push({
+            ...transaction.value,
+            id: globalsStore.transactionHistory.length + 1
+        });
+    }
+    transaction.value = { amount: 0, category: NonRecurringTransactionCategory.Other, date: new Date().toISOString().split('T')[0] };
 };
 </script>

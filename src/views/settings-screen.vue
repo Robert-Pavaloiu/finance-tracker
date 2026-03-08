@@ -1,10 +1,6 @@
 <template>
-    <div class=" flex-col items-center mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto ">
-        <div class="flex items-center text-center mb-4">
-            <label for="darkMode">{{ globalsStore.language === 'en' ? 'Enable Dark Mode:' : 'Activează Modul Întunecat:'
-            }}</label>
-            <input type="checkbox" id="darkMode" v-model="globalsStore.darkMode" class="ml-2" />
-        </div>
+    <h1 class="text-3xl font-bold text-center mt-6">{{ globalsStore.language === 'en' ? 'Settings' : 'Setări' }}</h1>
+    <div class="flex-col items-center mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto ">
         <div class="flex items-center text-center mb-4">
             <label for="currency" class="block mr-2">{{ globalsStore.language === 'en' ?
                 'Preferred Currency:' : 'Moneda Preferată: ' }}</label>

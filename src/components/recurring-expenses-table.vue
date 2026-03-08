@@ -1,7 +1,7 @@
 <template>
     <h1 class="p-2 text-xl font-bold text-center mt-4">{{ globalsStore.language === 'en' ? 'Recurring Transactions' :
         'Tranzacții Recurente'
-        }}
+    }}
     </h1>
     <div class="w-full bg-gray-100 max-w-5xl mx-auto shadow-lg rounded-lg border">
         <table class="w-full border-collapse mx-auto">
@@ -19,12 +19,9 @@
             <tbody class="text-center bg-gray-100" v-show="isExpanded">
                 <tr v-for="(transaction, index) in globalsStore.recurringExpenses" :key="index">
                     <td class="py-2 w-1/5 border-b">{{ transaction.recurringDay }}{{ dayEndsIn(transaction.recurringDay)
-                    }}</td>
-                    <td class="py-2 w-1/5 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{ transaction.amount }}
-                        {{ globalsStore.currency === 'lei' ? 'lei' : '' }}
-                    </td>
-                    <td class="py-2 w-1/5 border-b">{{ transaction.category }}</td>
+                        }}</td>
+                    <td class="py-2 w-1/5 border-b">{{ formatAmount(transaction.amount) }}</td>
+                    <td class="py-2 w-1/5 border-b">{{ translateCategory(transaction.category) }}</td>
                     <td class="py-2 w-1/5 border-b">{{ transaction.description }}</td>
                     <td class="py-2 w-1/5 border-b">
                         <button
@@ -46,9 +43,13 @@
 </template>
 <script setup lang="ts">
 import { useGlobalsStore } from '@/stores/globals-store';
+import { useCurrency } from '@/composables/useCurrency';
 import { ref } from 'vue';
+import { useCategory } from '@/composables/useCategory'
+const { translateCategory } = useCategory()
 
 const globalsStore = useGlobalsStore();
+const { formatAmount } = useCurrency();
 
 const isExpanded = ref(true);
 

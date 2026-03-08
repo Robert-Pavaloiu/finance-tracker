@@ -7,7 +7,7 @@
         <table class="w-full border-collapse mx-auto">
             <thead class="bg-gray-300 text-center">
                 <tr>
-                    <th class="py-2 w-1/7 border-b">{{ globalsStore.language == 'en' ? 'Month' : 'Luna' }}</th>
+                    <th class="py-2 w-1/7 border-b">{{ globalsStore.language == 'en' ? 'Date' : 'Data' }}</th>
                     <th class="py-2 w-1/7 border-b">{{ globalsStore.language == 'en' ? 'Amount Saved'
                         : 'Suma Salvată' }}
                     </th>
@@ -24,24 +24,15 @@
             </thead>
             <tbody class="text-center bg-gray-100" v-show="isExpanded">
                 <tr v-for="(contribution, index) in savingsStore.contributions" :key="index">
-                    <td class="py-2 w-1/7 border-b">{{ contribution.date }}</td>
-                    <td class="py-2 w-1/7 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{ contribution.amount }}
-                        {{ globalsStore.currency === 'lei' ? 'lei' : '' }}</td>
-                    <td class="py-2 w-1/7 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{
-                            savingsStore.getTotalUpToContributionIndex(index) +
-                            savingsStore.startingAmount }} {{ globalsStore.currency === 'lei' ? 'lei' : '' }}</td>
-                    <td class="py-2 w-1/7 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{ savingsStore.getRemainingByIndex(index) }} {{
-                            globalsStore.currency === 'lei' ? 'lei' : '' }}</td>
-                    <td class="py-2 w-1/7 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{
-                            savingsStore.getRequiredMonthlyContributionByDate(index, contribution.date) }} {{
-                            globalsStore.currency === 'lei' ? 'lei' : '' }}</td>
-                    <td class="py-2 w-1/7 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{ savingsStore.target }} {{ globalsStore.currency
-                            === 'lei' ? 'lei' : '' }}</td>
+                    <td class="py-2 w-1/7 border-b">{{ formatDate(contribution.date) }}</td>
+                    <td class="py-2 w-1/7 border-b">{{ formatAmount(contribution.amount) }}</td>
+                    <td class="py-2 w-1/7 border-b">{{ formatAmount(savingsStore.getTotalUpToContributionIndex(index) +
+                        savingsStore.startingAmount) }}</td>
+                    <td class="py-2 w-1/7 border-b">{{ formatAmount(savingsStore.getRemainingByIndex(index)) }}</td>
+                    <td class="py-2 w-1/7 border-b">{{
+                        formatAmount(savingsStore.getRequiredMonthlyContributionByDate(index, contribution.date)) }}
+                    </td>
+                    <td class="py-2 w-1/7 border-b">{{ formatAmount(savingsStore.target) }} </td>
                     <td class="py-2 w-1/7 border-b">
                         <button
                             class="bg-red-600 hover:bg-red-700 text-white p-1 rounded-lg shadow-lg border-2 border-red-800"
@@ -64,6 +55,11 @@
 import { useSavingsStore } from '@/stores/savings-store';
 import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
+import { useDate } from '@/composables/useDate'
+import { useCurrency } from '@/composables/useCurrency';
+
+const { formatAmount } = useCurrency();
+const { formatDate } = useDate()
 const savingsStore = useSavingsStore();
 const globalsStore = useGlobalsStore();
 const isExpanded = ref(true);

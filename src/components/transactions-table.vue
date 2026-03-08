@@ -14,12 +14,9 @@
             </thead>
             <tbody class="text-center bg-gray-100" v-show="isExpanded">
                 <tr v-for="(transaction, index) in globalsStore.transactionHistory" :key="index">
-                    <td class="py-2 w-1/4 border-b">{{ transaction.date }}</td>
-                    <td class="py-2 w-1/4 border-b">{{ globalsStore.currency === 'pound' ? '£' :
-                        globalsStore.currency === 'euro' ? '€' : '' }}{{ transaction.amount }}
-                        {{ globalsStore.currency === 'lei' ? 'lei' : '' }}
-                    </td>
-                    <td class="py-2 w-1/4 border-b">{{ transaction.category }}</td>
+                    <td class="py-2 w-1/4 border-b">{{ formatDate(transaction.date) }}</td>
+                    <td class="py-2 w-1/4 border-b">{{ formatAmount(transaction.amount) }}</td>
+                    <td class="py-2 w-1/4 border-b">{{ translateCategory(transaction.category) }}</td>
                     <td class="py-2 w-1/4 border-b">
                         <button
                             class="bg-red-600 hover:bg-red-700 text-white p-1 rounded-lg shadow-lg border-2 border-red-800"
@@ -48,6 +45,14 @@
 import ClearAllTransactionsModal from '@/components/clear-all-transactions-modal.vue';
 import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
+import { useDate } from '@/composables/useDate';
+import { useCurrency } from '@/composables/useCurrency';
+import { useCategory } from '@/composables/useCategory';
+
+const { translateCategory } = useCategory();
+
+const { formatDate } = useDate();
+const { formatAmount } = useCurrency();
 
 const globalsStore = useGlobalsStore();
 
@@ -56,7 +61,6 @@ const isExpanded = ref(true);
 const showClearAllModal = ref(false);
 
 const clearAllTransactions = () => {
-    // keep only recurring transactions; filter ensures the result is Transaction[]
     globalsStore.transactionHistory = globalsStore.transactionHistory.filter(
         (t) => t.isRecurring
     );

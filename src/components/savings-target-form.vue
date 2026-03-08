@@ -8,7 +8,7 @@
             <input type="number" id="Target" v-model="savingsStore.target" class="border rounded p-2" />
         </div>
         <div class="mb-4">
-            <label for="TargetDate`" class="px-2">{{ globalsStore.language === 'en' ?
+            <label for="TargetDate" class="px-2">{{ globalsStore.language === 'en' ?
                 'Complete by Date:' : 'Data de completare:' }}</label>
             <input type="date" id="TargetDate" v-model="savingsStore.targetDate" class="border rounded p-2" />
         </div>

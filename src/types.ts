@@ -2,7 +2,7 @@ export type Transaction = {
   id: number
   category: string
   amount: number
-  date: string
+  date?: string
   isRecurring?: boolean
 }
 
@@ -29,7 +29,6 @@ export type RecurringExpense = {
 export type Language = 'en' | 'ro'
 
 export interface GlobalsState {
-  darkMode: boolean
   currency: Currency
   language: Language
   transactionHistory: Transaction[]

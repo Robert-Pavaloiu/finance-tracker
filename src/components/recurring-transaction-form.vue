@@ -7,14 +7,14 @@
         </div>
         <div class="p-2">
             <label for="recurringCategory" class="pr-2">{{ globalsStore.language === 'en' ? 'Category:' : 'Categorie:'
-                }}</label>
+            }}</label>
             <select id="recurringCategory" v-model="recurringTransaction.category" class="border rounded p-2">
                 <option value="" disabled>{{ globalsStore.language === 'en' ? 'Select a category'
                     : 'Selectează o categorie' }}</option>
                 <option
                     v-for="category in Object.values(RecurringTransactionCategory).filter(cat => cat !== RecurringTransactionCategory.Rent)"
                     :key="category" :value="category">
-                    {{ category }}
+                    {{ translateCategory(category) }}
                 </option>
             </select>
         </div>
@@ -41,6 +41,8 @@
 import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
 import { RecurringTransactionCategory } from '@/enums';
+import { useCategory } from '@/composables/useCategory'
+const { translateCategory } = useCategory()
 
 const globalsStore = useGlobalsStore();
 

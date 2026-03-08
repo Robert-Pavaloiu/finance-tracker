@@ -24,7 +24,7 @@ function computeRecurringDate(
 export const useGlobalsStore: () => GlobalsState = defineStore(
   'globals',
   () => {
-    const darkMode = ref<boolean>(false)
+
     const language = ref<Language>('en')
     const currency = ref<Currency>('pound')
     const transactionHistory = ref<Transaction[]>([])
@@ -88,7 +88,7 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
 
       const recurringDate = computeRecurringDate(recurringDay)
       recurringExpenses.value.push({ category, description, recurringDay, amount, recurringDate })
-      addRecurringTransaction(category, amount, recurringDate)
+      rebuildRecurringTransactions()
     }
 
     function ensureRentExpense() {
@@ -125,11 +125,6 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
         }
       })
     }
-
-    function addRecurringTransaction(category: string, amount: number, recurringDate: string) {
-      rebuildRecurringTransactions()
-    }
-
     /**
      * Returns the recurring date for any given month/year based on the stored day.
      * Useful when calculating payments for future months.
@@ -149,7 +144,6 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
     )
 
     return {
-      darkMode,
       currency,
       transactionHistory,
       monthlyEarnings,

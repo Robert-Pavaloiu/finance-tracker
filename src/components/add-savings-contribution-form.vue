@@ -28,14 +28,14 @@ const savingsStore = useSavingsStore();
 
 const contribution = ref<{
     amount: number;
-    date: string;
+    date?: string;
 }>({
     amount: 0,
-    date: new Date().toLocaleDateString()
+    date: new Date().toISOString().split('T')[0]
 });
 
 const addContribution = () => {
-    if (contribution.value.amount > 0) {
+    if (contribution.value.amount > 0 && contribution.value.date) {
         savingsStore.contributions.push({
             amount: contribution.value.amount,
             date: contribution.value.date
@@ -43,7 +43,7 @@ const addContribution = () => {
         // Reset form
         contribution.value = {
             amount: 0,
-            date: new Date().toLocaleDateString()
+            date: new Date().toISOString().split('T')[0]
         };
     }
 };

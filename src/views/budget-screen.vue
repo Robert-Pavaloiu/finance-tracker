@@ -1,11 +1,12 @@
 <template>
-    <h1 class="p-2 text-xl font-bold text-center">{{ globalsStore.language === 'en' ? 'Money In' : 'Bani Intrați' }}
-    </h1>
+    <h1 class="text-3xl font-bold text-center mt-6">{{ globalsStore.language === 'en' ? 'Budget' : 'Buget' }}</h1>
+    <h2 class="p-2 text-xl font-bold text-center">{{ globalsStore.language === 'en' ? 'Money In' : 'Bani Intrați' }}
+    </h2>
     <div class="bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto">
         <MonthlyEarningsForm />
     </div>
-    <h1 class="p-2 text-xl font-bold text-center">{{ globalsStore.language === 'en' ? 'Money Out' : 'Bani Ieșiti' }}
-    </h1>
+    <h2 class="p-2 text-xl font-bold text-center">{{ globalsStore.language === 'en' ? 'Money Out' : 'Bani Ieșiti' }}
+    </h2>
     <div class="mt-4 bg-gray-100 border p-6 shadow-lg rounded-lg max-w-2xl mx-auto">
         <h2 class="p-2 text-md font-bold">{{ globalsStore.language === 'en' ? 'Add New Fixed Recurring Expense'
             : 'Adaugă Cheltuială Recurentă Nouă' }}</h2>
