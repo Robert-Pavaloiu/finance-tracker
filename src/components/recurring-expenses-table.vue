@@ -56,7 +56,7 @@
         </button>
         <EditRecurringExpenseModal v-if="editingExpense" :expense="editingExpense.expense"
             @close="editingExpense = null" @save="saveEdit" />
-    </div>ss
+    </div>
 </template>
 <script setup lang="ts">
 import { useGlobalsStore } from '@/stores/globals-store';
@@ -89,6 +89,7 @@ const saveEdit = (updates: Partial<RecurringExpense>) => {
 
 const deleteTransaction = (index: number) => {
     globalsStore.recurringExpenses.splice(index, 1);
+    globalsStore.rebuildRecurringTransactions()
 };
 
 

@@ -123,7 +123,7 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
             id: crypto.randomUUID(),
             category: cat,
             amount: expense.amount,
-            date: date.toLocaleDateString(),
+            date: date.toLocaleDateString('en-GB'),
             isRecurring: true,
           })
         }
@@ -186,6 +186,7 @@ export const useGlobalsStore: () => GlobalsState = defineStore(
       editRecurringExpense,
       language,
       darkMode,
+      rebuildRecurringTransactions,
     }
   },
   {

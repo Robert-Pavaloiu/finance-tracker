@@ -67,6 +67,7 @@ export const useSavingsStore: () => SavingsState = defineStore(
       getRequiredMonthlyContributionByDate,
       getRemainingByIndex,
       editContribution,
+      totalContributed,
     }
   },
   {

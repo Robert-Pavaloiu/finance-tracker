@@ -4,7 +4,7 @@
         'Urmăritor de Economii'
     }}
     </h1>
-    <div class="w-full bg-gray-100 dark:bg-gray-800 max-w-7xl mx-auto shadow-lg rounded-lg border dark:border-gray-70">
+    <div class="w-full bg-gray-100 dark:bg-gray-800 max-w-7xl mx-auto shadow-lg rounded-lg border dark:border-gray-700">
         <table class="w-full border-collapse mx-auto">
             <thead class="bg-gray-300 dark:bg-gray-700 dark:text-white text-center">
                 <tr>

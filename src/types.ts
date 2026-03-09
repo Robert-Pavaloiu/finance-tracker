@@ -58,6 +58,7 @@ export interface GlobalsState {
   ensureRentExpense: () => void
   editTransaction: (id: string, updates: Partial<Transaction>) => void
   editRecurringExpense: (index: number, updates: Partial<RecurringExpense>) => void
+  rebuildRecurringTransactions: () => void
   darkMode: boolean
 }
 
@@ -70,6 +71,7 @@ export interface SavingsState {
   remainingAmount: number
   monthsRemaining: number
   requiredMonthlyContribution: number
+  totalContributed: number
   getTotalUpToContributionIndex: (index: number) => number
   getRequiredMonthlyContributionByDate: (index: number, date: string) => number
   getRemainingByIndex: (index: number) => number

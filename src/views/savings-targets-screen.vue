@@ -2,12 +2,15 @@
     <h1 class="text-3xl font-bold text-center my-6 dark:text-white">{{ globalsStore.language === 'en' ?
         'Savings Targets' : 'Ținte de Economii' }}</h1>
     <SavingsProgressBar />
-    <br />
-    <SavingsTargetForm />
-    <br />
-    <AddSavingsContributionForm />
-    <br />
-    <SavingsTrackerTable />
+    <div class="mt-8">
+        <SavingsTargetForm />
+    </div>
+    <div class="mt-8">
+        <AddSavingsContributionForm />
+    </div>
+    <div class="mt-8">
+        <SavingsTrackerTable />
+    </div>
 </template>
 <script setup lang="ts">
 import SavingsTargetForm from '@/components/savings-target-form.vue';

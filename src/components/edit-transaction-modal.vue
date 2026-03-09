@@ -9,15 +9,16 @@
                     {{ globalsStore.language === 'en' ? 'Amount' : 'Sumă' }}
                 </label>
                 <input type="number" v-model="form.amount"
-                    class="border dark:border-gray-600 rounded p-2 w-full bg-white dark:bg-gray-700 dark:text-gray-200" />
+                    class="border dark:border-gray-600 rounded p-2 w-full bg-white dark:bg-gray-700 dark:text-white" />
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium mb-1">
                     {{ globalsStore.language === 'en' ? 'Category' : 'Categorie' }}
                 </label>
                 <select v-model="form.category"
-                    class="border dark:border-gray-600 rounded p-2 w-full bg-white dark:bg-gray-700 dark:text-gray-200">
-                    <option v-for="cat in Object.values(NonRecurringCategories)" :key="cat" :value="cat">{{ cat }}
+                    class="border dark:border-gray-600 rounded p-2 w-full bg-white dark:bg-gray-700 dark:text-white">
+                    <option v-for="cat in Object.values(NonRecurringCategories)" :key="cat" :value="cat">
+                        {{ translateCategory(cat) }}
                     </option>
                 </select>
             </div>
@@ -26,7 +27,7 @@
                     {{ globalsStore.language === 'en' ? 'Date' : 'Dată' }}
                 </label>
                 <input type="date" v-model="form.date"
-                    class="border dark:border-gray-600 rounded p-2 w-full bg-white dark:bg-gray-700 dark:text-gray-200" />
+                    class="border dark:border-gray-600 rounded p-2 w-full bg-white dark:bg-gray-700 dark:text-white" />
             </div>
             <div class="flex justify-end space-x-3">
                 <button @click="$emit('close')"
@@ -47,6 +48,8 @@ import { ref } from 'vue'
 import { useGlobalsStore } from '@/stores/globals-store'
 import { NonRecurringCategories } from '@/enums'
 import type { Transaction } from '@/types'
+import { useCategory } from '@/composables/useCategory'
+const { translateCategory } = useCategory()
 
 const props = defineProps<{ transaction: Transaction }>()
 const emit = defineEmits(['close', 'save'])

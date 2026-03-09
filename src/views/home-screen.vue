@@ -1,10 +1,14 @@
 <template>
     <SummaryBar />
-    <br />
-    <TransactionForm />
-    <TransactionsTable />
-    <br />
-    <ExpensePieChart />
+    <div class="mt-8">
+        <TransactionForm />
+    </div>
+    <div class="mt-8">
+        <TransactionsTable />
+    </div>
+    <div class="mt-8">
+        <ExpensePieChart />
+    </div>
 </template>
 <script setup lang="ts">
 import ExpensePieChart from '@/components/expense-pie-chart.vue';

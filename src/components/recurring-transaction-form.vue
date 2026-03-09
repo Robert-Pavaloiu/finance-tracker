@@ -1,14 +1,13 @@
 <template>
     <form>
-        <div class="p-2">
-            <label for="recurringAmount" class="pr-2">{{ globalsStore.language === 'en' ? 'Amount:' : 'Sumă:' }}</label>
+        <div class="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-3">
+            <label for="recurringAmount">{{ globalsStore.language === 'en' ? 'Amount:' : 'Sumă:' }}</label>
             <input type="number" id="recurringAmount" v-model="recurringTransaction.amount"
-                class="border rounded p-2" />
-        </div>
-        <div class="p-2">
-            <label for="recurringCategory" class="pr-2">{{ globalsStore.language === 'en' ? 'Category:' : 'Categorie:'
-                }}</label>
-            <select id="recurringCategory" v-model="recurringTransaction.category" class="border rounded p-2">
+                class="border rounded p-2 dark:bg-gray-700 dark:text-white" />
+
+            <label for="recurringCategory">{{ globalsStore.language === 'en' ? 'Category:' : 'Categorie:' }}</label>
+            <select id="recurringCategory" v-model="recurringTransaction.category"
+                class="border rounded p-2 dark:bg-gray-700 dark:text-white">
                 <option value="" disabled>{{ globalsStore.language === 'en' ? 'Select a category'
                     : 'Selectează o categorie' }}</option>
                 <option
@@ -17,23 +16,24 @@
                     {{ translateCategory(category) }}
                 </option>
             </select>
-        </div>
-        <div class="p-2">
-            <label for="recurringDescription" class="pr-2">{{ globalsStore.language === 'en' ? 'Description:' :
-                'Descriere:' }}</label>
+
+            <label for="recurringDescription">{{ globalsStore.language === 'en' ? 'Description:' : 'Descriere:'
+                }}</label>
             <input type="text" id="recurringDescription" v-model="recurringTransaction.description"
-                class="border rounded p-2" />
-        </div>
-        <div class="p-2">
-            <label for="recurringDay" class="pr-2">{{ globalsStore.language === 'en' ? 'Recurring Day:'
-                : 'Ziua Recurentă: ' }}</label>
+                class="border rounded p-2 dark:bg-gray-700 dark:text-white" />
+
+            <label for="recurringDay">{{ globalsStore.language === 'en' ? 'Recurring Day:' : 'Ziua Recurentă:'
+                }}</label>
             <input type="number" id="recurringDay" v-model.number="recurringTransaction.recurringDay" :min="1" :max="31"
-                class="border rounded p-2" />
+                class="border rounded p-2 dark:bg-gray-700 dark:text-white" />
         </div>
-        <button type="submit"
-            class="bg-green-600 hover:bg-green-700 text-white p-2 m-2 rounded-lg shadow-lg border-2 border-green-800"
-            v-on:click.prevent="addRecurringTransaction">{{ globalsStore.language === 'en' ?
-                'Add Recurring Transaction' : 'Adaugă Tranzacție Recurentă' }}</button>
+        <div class="flex justify-center mt-4">
+            <button type="submit"
+                class="bg-green-600 hover:bg-green-700 text-white p-2 px-6 rounded-lg shadow-lg border-2 border-green-800"
+                v-on:click.prevent="addRecurringTransaction">
+                {{ globalsStore.language === 'en' ? 'Add Recurring Transaction' : 'Adaugă Tranzacție Recurentă' }}
+            </button>
+        </div>
     </form>
 </template>
 

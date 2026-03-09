@@ -1,11 +1,15 @@
 <template>
     <div class="mt-4">
-        <label for="rentAmount" class="px-2">{{ globalsStore.language === 'en' ? 'Rent:' : 'Chirie:' }}</label>
-        <input type="number" id="rentAmount" v-model.number="rentAmount" class="border rounded p-2" />
-        <label for="rentRecurringDay" class="px-2">{{ globalsStore.language === 'en' ?
-            'Recurring Day:' : ' Ziua Recurentă:' }}</label>
-        <input type="number" id="rentRecurringDay" v-model.number="rentRecurringDay" :min="1" :max="maxDay"
-            class="border rounded p-2" />
+        <div class="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-3">
+            <label for="rentAmount">{{ globalsStore.language === 'en' ? 'Rent:' : 'Chirie:' }}</label>
+            <input type="number" id="rentAmount" v-model.number="rentAmount"
+                class="border rounded p-2 dark:bg-gray-700 dark:text-white" />
+
+            <label for="rentRecurringDay">{{ globalsStore.language === 'en' ? 'Recurring Day:' : 'Ziua Recurentă:'
+                }}</label>
+            <input type="number" id="rentRecurringDay" v-model.number="rentRecurringDay" :min="1" :max="maxDay"
+                class="border rounded p-2 dark:bg-gray-700 dark:text-white" />
+        </div>
     </div>
 </template>
 
