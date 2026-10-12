@@ -17,16 +17,16 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useGlobalsStore } from '@/stores/globals-store'
+import { useToday } from '@/composables/useToday'
 
 const globalsStore = useGlobalsStore()
+const { today } = useToday()
 
 const selectedPayDay = ref<number>(globalsStore.monthlyEarnings.recurringDay || 1)
 const selectedAmount = ref<number>(globalsStore.monthlyEarnings.amount || 0)
 
-const currentYear = new Date().getFullYear()
-const currentMonth = new Date().getMonth()
-
-const maxDay = computed(() => new Date(currentYear, currentMonth + 1, 0).getDate())
+const currentDate = computed(() => new Date(`${today.value}T00:00:00`))
+const maxDay = computed(() => new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 0).getDate())
 
 watch(selectedPayDay, (newDay) => {
     if (typeof newDay === 'number' && newDay >= 1) {

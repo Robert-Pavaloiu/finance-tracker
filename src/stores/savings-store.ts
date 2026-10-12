@@ -1,10 +1,12 @@
 import type { SavingsState } from '@/types'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useToday } from '@/composables/useToday'
 
 export const useSavingsStore: () => SavingsState = defineStore(
   'savings',
   () => {
+    const { today } = useToday()
     const target = ref<number>(0)
     const targetDate = ref<string>('')
     const startingAmount = ref<number>(0)
@@ -15,7 +17,7 @@ export const useSavingsStore: () => SavingsState = defineStore(
     const totalSaved = computed(() => startingAmount.value + totalContributed.value)
     const remainingAmount = computed(() => Math.max(0, target.value - totalSaved.value))
     const monthsRemaining = computed(() => {
-      const now = new Date()
+      const now = new Date(`${today.value}T00:00:00`)
       const targetD = new Date(targetDate.value)
       const years = targetD.getFullYear() - now.getFullYear()
       const months = targetD.getMonth() - now.getMonth()

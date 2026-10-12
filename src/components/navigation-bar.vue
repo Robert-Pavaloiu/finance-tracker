@@ -17,8 +17,7 @@
                 <li>
                     <RouterLink to="/settings" class="text-gray-300 hover:text-gray-200"
                         active-class="text-white border-b border-white">{{ globalsStore.language === 'en'
-                            ?
-                            'Settings' : 'Setări' }}</RouterLink>
+                            ? 'Settings' : 'Setări' }}</RouterLink>
                 </li>
             </ul>
         </div>

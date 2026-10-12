@@ -28,15 +28,17 @@
 import { useGlobalsStore } from '@/stores/globals-store';
 import { useSavingsStore } from '@/stores/savings-store';
 import { ref } from 'vue';
+import { useToday } from '@/composables/useToday'
 const globalsStore = useGlobalsStore();
 const savingsStore = useSavingsStore();
+const { today } = useToday()
 
 const contribution = ref<{
     amount: number;
     date?: string;
 }>({
     amount: 0,
-    date: new Date().toISOString().split('T')[0]
+    date: today.value
 });
 
 const addContribution = () => {
@@ -48,7 +50,7 @@ const addContribution = () => {
         // Reset form
         contribution.value = {
             amount: 0,
-            date: new Date().toISOString().split('T')[0]
+            date: today.value
         };
     }
 };

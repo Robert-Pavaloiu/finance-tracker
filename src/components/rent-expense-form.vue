@@ -17,14 +17,14 @@
 import { ref, computed, watch } from 'vue'
 import { useGlobalsStore } from '@/stores/globals-store'
 import { TransactionCategory } from '@/enums'
+import { useToday } from '@/composables/useToday'
 
 const globalsStore = useGlobalsStore()
-
-const currentYear = new Date().getFullYear()
-const currentMonth = new Date().getMonth()
+const { today } = useToday()
 
 // maximum days in the current month; used to constrain the input
-const maxDay = computed(() => new Date(currentYear, currentMonth + 1, 0).getDate())
+const currentDate = computed(() => new Date(`${today.value}T00:00:00`))
+const maxDay = computed(() => new Date(currentDate.value.getFullYear(), currentDate.value.getMonth() + 1, 0).getDate())
 
 const rentExpense = computed(() => globalsStore.recurringExpenses.find(e => e.category === TransactionCategory.Rent))
 const rentAmount = ref(rentExpense.value?.amount || 0)

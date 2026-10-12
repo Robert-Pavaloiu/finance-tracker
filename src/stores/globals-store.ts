@@ -9,29 +9,33 @@ import type {
   Language,
 } from '@/types'
 import { RecurringCategories, TransactionCategory } from '@/enums'
-
-function computeRecurringDate(
-  day: number,
-  year: number = new Date().getFullYear(),
-  month: number = new Date().getMonth(),
-): string {
-  // clamp the day to the maximum number of days in the given month/year
-  const maxDay = new Date(year, month + 1, 0).getDate()
-  const adjusted = Math.min(day, maxDay)
-  const date = new Date(year, month, adjusted)
-  return date.toISOString()
-}
+import { useToday } from '@/composables/useToday'
 
 export const useGlobalsStore: () => GlobalsState = defineStore(
   'globals',
   () => {
+    const { today } = useToday()
+    const currentDate = computed(() => new Date(`${today.value}T00:00:00`))
+
+    function computeRecurringDate(
+      day: number,
+      year: number = currentDate.value.getFullYear(),
+      month: number = currentDate.value.getMonth(),
+    ): string {
+      // clamp the day to the maximum number of days in the given month/year
+      const maxDay = new Date(year, month + 1, 0).getDate()
+      const adjusted = Math.min(day, maxDay)
+      const date = new Date(year, month, adjusted)
+      return date.toISOString()
+    }
+
     const language = ref<Language>('en')
     const currency = ref<Currency>('pound')
     const transactionHistory = ref<Transaction[]>([])
     const darkMode = ref<boolean>(false)
 
     // default recurring day: today
-    const defaultDay = new Date().getDate()
+    const defaultDay = currentDate.value.getDate()
     const monthlyEarnings = ref<MonthlyEarnings>({
       recurringDay: defaultDay,
       recurringDate: computeRecurringDate(defaultDay),

@@ -33,12 +33,14 @@ import { useGlobalsStore } from '@/stores/globals-store';
 import { ref } from 'vue';
 import { NonRecurringCategories } from '@/enums';
 import { useCategory } from '@/composables/useCategory'
+import { useToday } from '@/composables/useToday'
 const { translateCategory } = useCategory()
+const { today } = useToday()
 
 const globalsStore = useGlobalsStore();
 
 
-const transaction = ref<{ amount: number; category: typeof NonRecurringCategories[number]; date?: string }>({ amount: 0, category: NonRecurringCategories[0], date: new Date().toISOString().split('T')[0] });
+const transaction = ref<{ amount: number; category: typeof NonRecurringCategories[number]; date?: string }>({ amount: 0, category: NonRecurringCategories[0], date: today.value });
 
 const addTransaction = () => {
     if (transaction.value.amount > 0 && transaction.value.category && transaction.value.date) {
@@ -47,6 +49,6 @@ const addTransaction = () => {
             id: crypto.randomUUID()
         });
     }
-    transaction.value = { amount: 0, category: NonRecurringCategories[0], date: new Date().toISOString().split('T')[0] };
+    transaction.value = { amount: 0, category: NonRecurringCategories[0], date: today.value };
 };
 </script>
